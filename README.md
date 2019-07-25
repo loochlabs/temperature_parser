@@ -2,7 +2,7 @@
 
 This python script is meant for parsing CSV files with a CSV file output.
 
-Commandline arguements
+Commandline arguments
 >python parse.py \<flag\> \<input csv\> \<output csv\> \<min\> \<max\>
 
 Flags
