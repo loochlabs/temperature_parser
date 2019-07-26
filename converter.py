@@ -74,9 +74,9 @@ def csv_to_tiff(filename, mn, mx) :
 	rgbArray = np.zeros((int(dimensions[0]), int(dimensions[1]), 3), 'uint8')
 
 	#grab all content and store in 1d array of floats
-	tempMin = float(argMinTemp)
-	tempMax = float(argMaxTemp)
-	tempDiff = float(tempMax - tempMin) 
+	tempMin = float(mn)
+	tempMax = float(mx)
+	tempDiff = tempMax - tempMin
 	arr = []
 	for y in range(len(content)) :
 		row = content[y].split(',')
