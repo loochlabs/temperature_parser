@@ -1,2 +1,7 @@
 #gitignore
-data/.*
+data
+local_dev
+temp
+
+#python specific
+__pycache__/
