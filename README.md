@@ -1,6 +1,6 @@
 # Temperature Processor
 
-These python scripts are meant for parsing CSV files with a CSV file output.
+These python scripts are meant for parsing CSV files with a TIFF file output.
 
 ## cmd_convert
 ### Intermediate script for converting csv to tif
