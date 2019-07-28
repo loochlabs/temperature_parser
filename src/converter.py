@@ -8,7 +8,7 @@ base = 255
 
 #Desaturation factor
 #TODO soft code this in config file
-desaturation = 0.3
+desaturation = 0
 
 def temp_to_b(pct) :
 	tmin = 0.25
@@ -90,9 +90,10 @@ def csv_to_tiff(filename) :
 			rgbArray[x][y][2] = (maskData[x][y][2]/base) * temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
 
 			#desaturation channel if we want to soften these colors
-			rgbArray[x][y][0] += ((base-rgbArray[x][y][0]) *desaturation)
-			rgbArray[x][y][1] += ((base-rgbArray[x][y][1]) *desaturation)
-			rgbArray[x][y][2] += ((base-rgbArray[x][y][2]) *desaturation)
+			if desaturation > 0 :
+				rgbArray[x][y][0] += ((base-rgbArray[x][y][0]) *desaturation)
+				rgbArray[x][y][1] += ((base-rgbArray[x][y][1]) *desaturation)
+				rgbArray[x][y][2] += ((base-rgbArray[x][y][2]) *desaturation)
 
 	#create image file
 	im = Image.fromarray(rgbArray)
