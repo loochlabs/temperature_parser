@@ -10,11 +10,11 @@ Commandline arguments
 
 Flags
 * -d : process all csv's in a directory
-** example
+  * example
 Commandline arguments
 >python cmd_convert.py -d path/to/your/directory
 
 * -f : process an individual file 
-** example
+  * example
 Commandline arguments
 >python cmd_convert.py -f name_of_file.csv
