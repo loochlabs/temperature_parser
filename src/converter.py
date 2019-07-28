@@ -62,7 +62,7 @@ def csv_to_tiff(filename) :
 	rgbArray = np.zeros((int(dimensions[0]), int(dimensions[1]), 3), 'uint8')
 
 	#use image mask to remove edge values
-	maskFilename = "/../data/mask.png"
+	maskFilename = "/../images/mask.png"
 	maskImage = Image.open(os.path.dirname(__file__) + maskFilename)
 	maskImage.load()
 	maskData = np.asarray(maskImage)

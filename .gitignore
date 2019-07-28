@@ -2,5 +2,8 @@
 local_dev
 temp
 
+#art
+images/*.fla
+
 #python specific
 __pycache__/
