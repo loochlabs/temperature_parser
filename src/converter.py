@@ -3,15 +3,22 @@ from PIL import Image
 import numpy as np
 import os.path
 
+#Base RGB color channel [0-255]
+base = 255
+
+#Desaturation factor
+#TODO soft code this in config file
+desaturation = 0.3
+
 def temp_to_b(pct) :
 	tmin = 0.25
 	tmax = 0.5
 
 	if pct <= tmin :
-		return 255
+		return base
 
 	if tmin < pct <= tmax :
-		return 255 - int(255*(pct/tmax)) #[255-0]
+		return base - int(base*(pct/tmax)) #[255-0]
 
 	return 0
 
@@ -22,13 +29,13 @@ def temp_to_g(pct) :
 	tmax = 1.0
 
 	if tmin < pct <= tmid1 :
-		return int(255*(pct/tmid1)) #[0-255]
+		return int(base*(pct/tmid1)) #[0-255]
 
 	if tmid1 < pct <= tmid2 :
-		return 255
+		return base
 
 	if tmid2 < pct <= tmax :
-		return 255 - int(255*(pct/tmax)) #[255-0]
+		return base - int(base*(pct/tmax)) #[255-0]
 
 	return 0
 
@@ -37,10 +44,10 @@ def temp_to_r(pct) :
 	tmid = 0.75
 
 	if tmin < pct <= tmid :
-		return int(255*(pct/tmid)) #[0-255]
+		return int(base*(pct/tmid)) #[0-255]
 
 	if tmid < pct :
-		return 255
+		return base
 
 	return 0
 
@@ -68,21 +75,6 @@ def csv_to_tiff(filename) :
 	maskData = np.asarray(maskImage)
 	maskImage.close()
 
-	#TODO process all csvs before hand to get these values
-	#find min/max temperature in this file
-	'''
-	tempMin = float(1000)
-	for y in range(len(content)) :
-		row = content[y].split(',')
-		for x in range(len(row)) :
-			tempMin = min(tempMin, float(row[x]))
-
-	tempMax = float(-1000)
-	for y in range(len(content)) :
-		row = content[y].split(',')
-		for x in range(len(row)) :
-			tempMax = max(tempMax, float(row[x]))
-	'''
 	#grab all content and store in 1d array of floats
 	tempMax = 20.5 #float(tempMax)
 	tempMin = 14.5 #float(tempMin)
@@ -92,10 +84,15 @@ def csv_to_tiff(filename) :
 	for y in range(len(content)) :
 		row = content[y].split(',')
 		for x in range(len(row)) :
-			#if tempMin < float(row[x]) < tempMax : 
-			rgbArray[x][y][0] = (maskData[x][y][0]/255) * temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff)) 
-			rgbArray[x][y][1] = (maskData[x][y][1]/255) * temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))  
-			rgbArray[x][y][2] = (maskData[x][y][2]/255) * temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))  
+			#set pixel color based on temperature reading
+			rgbArray[x][y][0] = (maskData[x][y][0]/base) * temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff))
+			rgbArray[x][y][1] = (maskData[x][y][1]/base) * temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
+			rgbArray[x][y][2] = (maskData[x][y][2]/base) * temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
+
+			#desaturation channel if we want to soften these colors
+			rgbArray[x][y][0] += ((base-rgbArray[x][y][0]) *desaturation)
+			rgbArray[x][y][1] += ((base-rgbArray[x][y][1]) *desaturation)
+			rgbArray[x][y][2] += ((base-rgbArray[x][y][2]) *desaturation)
 
 	#create image file
 	im = Image.fromarray(rgbArray)
