@@ -1,17 +1,18 @@
-# Temperature CSV Parser
+# Temperature Processor
 
-This python script is meant for parsing CSV files with a CSV file output.
+These python scripts are meant for parsing CSV files with a CSV file output.
 
-## parse.py
+## cmd_convert
+### Intermediate script for converting csv to tif
+
 Commandline arguments
->python parse.py \<flag\> \<input csv\> \<output csv\> \<min\> \<max\>
+>python cmd_convert.py \<flag\> \<filename\> 
 
 Flags
-* -p : purge values in given range
-* -r : replace values in given range with NaN   
+* -d : process all csv's in a directory
+  * example
+  * >python cmd_convert.py -d path/to/your/directory
 
-## mask.py
-This is just a different variant using numpy.
-
-Commandline arguments
->python mask.py \<input csv\> \<output csv\> \<min\> \<max\>
+* -f : process an individual file 
+  * example
+  * >python cmd_convert.py -f name_of_file.csv
