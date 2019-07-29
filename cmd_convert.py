@@ -7,9 +7,9 @@ inname = sys.argv[2]
 
 #single file
 if argflag == "-f" :
-	cn.csv_to_tiff(inname)
+	cn.csv_to_image(inname)
 
 if argflag == "-d" :
 	for f in os.listdir(inname) :
 		if ".csv" in f :
-			cn.csv_to_tiff(inname + "/" + f)
+			cn.csv_to_image(inname + "/" + f)
