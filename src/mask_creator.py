@@ -18,7 +18,7 @@ for n in range(len(dimensions)) :
 content = content[1:]
 
 #set image to 255 (white)
-rgbArray = np.full((int(dimensions[0]), int(dimensions[1]), 3), 255, dtype='uint8')
+rgbArray = np.full((int(dimensions[1]), int(dimensions[0]), 3), 255, dtype='uint8')
 
 cutoff = 20.5
 
@@ -27,9 +27,9 @@ for y in range(len(content)) :
 	row = content[y].split(',')
 	for x in range(len(row)) :
 		if float(row[x]) >= cutoff :
-			rgbArray[x][y][0] = 0
-			rgbArray[x][y][1] = 0
-			rgbArray[x][y][2] = 0
+			rgbArray[y][x][0] = 0
+			rgbArray[y][x][1] = 0
+			rgbArray[y][x][2] = 0
 
 #create mask image
 im = Image.fromarray(rgbArray)
