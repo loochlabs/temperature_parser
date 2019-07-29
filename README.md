@@ -6,7 +6,7 @@ These python scripts are meant for parsing CSV files into an image heatmap.
 ## Temperature Color Range
 ![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/temperature_range.png)
 
-## cmd_convert
+## Getting Started
 ### Intermediate script for converting csv to tif
 
 Commandline arguments
