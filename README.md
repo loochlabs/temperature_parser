@@ -1,6 +1,7 @@
 # Temperature Processor
+![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/heatmap_example.png)
 
-These python scripts are meant for parsing CSV files with a TIFF file output.
+These python scripts are meant for parsing CSV files into an image heatmap.
 
 ## Temperature Color Range
 ![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/temperature_range.png)
