@@ -84,9 +84,9 @@ def csv_to_tiff(filename) :
 		row = content[y].split(',') #splits each value in the row by the comma
 		for x in range(len(row)) : #for each temp value set colour
 			#set pixel color based on temperature reading
-			rgbArray[y][x][0] = (maskData[x][y][0]/base) * temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff))
-			rgbArray[y][x][1] = (maskData[x][y][1]/base) * temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
-			rgbArray[y][x][2] = (maskData[x][y][2]/base) * temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
+			rgbArray[y][x][0] = (maskData[y][x][0]/base) * temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff))
+			rgbArray[y][x][1] = (maskData[y][x][1]/base) * temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
+			rgbArray[y][x][2] = (maskData[y][x][2]/base) * temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
 
 	#create image file
 	im = Image.fromarray(rgbArray)
