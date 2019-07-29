@@ -49,7 +49,7 @@ def temp_to_r(pct) :
 	return 0
 
 #Main function of interest! 
-def csv_to_tiff(filename) : 
+def csv_to_image(filename, filetype="TIFF") : 
 	print("Converting {}...".format(filename))
 
 	#read csv convert to an array
@@ -91,5 +91,8 @@ def csv_to_tiff(filename) :
 	#create image file
 	im = Image.fromarray(rgbArray)
 	outfile = filename.split('.', 1)[0] #strip out old extension name (.csv)
-	im.save(outfile + '.tif', 'TIFF') #save it as a tiff and add .tif file name
+
+	filetypeExt = { 'TIFF': ".tif", 'PNG': '.png', 'JPEG': '.jpg' }
+
+	im.save(outfile + filetypeExt[filetype], filetype) #save it as a tiff and add .tif file name
     
