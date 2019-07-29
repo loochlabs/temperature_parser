@@ -2,6 +2,9 @@
 
 These python scripts are meant for parsing CSV files with a TIFF file output.
 
+## Temperature Color Range
+![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/temperature_range.png)
+
 ## cmd_convert
 ### Intermediate script for converting csv to tif
 
