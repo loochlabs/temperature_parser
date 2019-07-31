@@ -16,27 +16,32 @@ Created on Wed Jul 31 10:45:16 2019
 #6) Close that CSV
 #7) At end, print min and max values from the min and max lists
 
-import csv 
-#import numpy as np #not sure yet if I need numpy
-#import sys #do I need this? 
+#%%
+import csv
 
 def csv_min_max(filename):
-    f = open('Ellesmere_IR_flight01_1000ft_000028.csv', 'r') #open file
-
-    with f: 
-        content = content[1:] #ignore the first line of the CSV that has the dimensions in it
-        content = csv.reader(f, delimiter=',') #read all the lines in the file
-        min_list = [] #creates a blank list
-        max_list = [] 
-        for row in content:
-            for n in row: #loops through all items in file and adds the minimum value to the list
-                min_list.append(min(n))
-            for n in row:
-                max_list.append(max(n))
-        print(min_list)
-        print(max_list)
+    f = open(filename, 'r') #open file
+#    content = csv.reader(f, delimiter=',')
+    for row in csv.reader(f):
+        for n in row:
+            print(n)
     f.close()
-    
-    print(min(min_list))
-    print(max(max_list))
-    
+
+#    with f:
+#        content = content[1:] #ignore the first line of the CSV that has the dimensions in it
+#        content = csv.reader(f, delimiter=',') #read all the lines in the file
+#        min_list = [] #creates a blank list
+#        max_list = [] 
+#        for row in content:
+#            for n in row: #loops through all items in file and adds the minimum value to the list
+#                min_list.append(min(n))
+#            for n in row:
+#                max_list.append(max(n))
+#        print(min_list)
+#        print(max_list)
+#    f.close()
+#    
+#    print(min(min_list))
+#    print(max(max_list))
+
+#%%
