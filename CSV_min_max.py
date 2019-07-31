@@ -21,27 +21,22 @@ import csv
 
 def csv_min_max(filename):
     f = open(filename, 'r') #open file
-#    content = csv.reader(f, delimiter=',')
-    for row in csv.reader(f):
-        for n in row:
-            print(n)
-    f.close()
+    content = csv.reader(f, delimiter=',')
 
-#    with f:
-#        content = content[1:] #ignore the first line of the CSV that has the dimensions in it
-#        content = csv.reader(f, delimiter=',') #read all the lines in the file
-#        min_list = [] #creates a blank list
-#        max_list = [] 
-#        for row in content:
-#            for n in row: #loops through all items in file and adds the minimum value to the list
-#                min_list.append(min(n))
-#            for n in row:
-#                max_list.append(max(n))
-#        print(min_list)
-#        print(max_list)
-#    f.close()
-#    
-#    print(min(min_list))
-#    print(max(max_list))
+    with f:
+        array = content[1:] #ignore the first line of the CSV that has the dimensions in it 
+        min_list = [] #creates a blank list
+        max_list = [] 
+        for row in array:
+            for n in row: #loops through all items in file and adds the minimum value to the list
+                min_list.append(min(n))
+            for n in row:
+                max_list.append(max(n))
+        print(min_list)
+        print(max_list)
+    f.close()
+    
+    print(min(min_list))
+    print(max(max_list))
 
 #%%
