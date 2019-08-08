@@ -18,13 +18,11 @@ Created on Wed Jul 31 10:45:16 2019
 #looks at the current directory. So I need to override that by giving it a directory.
 #This is a pretty key thing I need to understand as I will need to do this all the time. (I.e. access files)
 
-#1) Read 1 CSV
-#2) Get min and max values from that CSV and add that to a list
-#3) Close that CSV
-#4) Open a new CSV and read
-#5) Get min and max values from that CSV and add that to a list
-#6) Close that CSV
-#7) At end, print min and max values from the min and max lists
+#New plan:
+#1) Point to a given file directory
+#2) Read all the CSVs in that directory
+#3) Find the min and max of each CSV
+#4) Print the min and max values across all CSVs
 
 
 #STEVE: think about what we want here. Do we need an entire list?
@@ -37,16 +35,26 @@ Created on Wed Jul 31 10:45:16 2019
 
 #%%
 import csv
-import sys
+import sys #think I could also use the os module to achieve the same thing
 
 sys.path.append("C:\Local\OneDrive - University of Canterbury\My Documents\PhD\Data Analysis\TIR\Test Data") #directory where CSVs are saved
 
-def csv_min_max(filename): #Hmm, I'm a bit confused about if you direct the script to look at a whole directory, how does 'filename' fit in here? I.e., I wouldn't direct the function to a specific folder then.
+def csv_min_max(filename): #At the moment, I seem to only be able to open a specific file, not point to a directory to retrieve the CSV(s)
     f = open(filename, 'r') #open file
-    content = csv.reader(f, delimiter=',')
+    csv_reader = csv.reader(f)
 
-    with f:
-        array = content[1:] #ignore the first line of the CSV that has the dimensions in it 
+#    next(csv_reader) #ignore the first line of the CSV that has the dimensions in it 
+    for row in csv_reader:
+        min(row)
+        max(row)
+
+    f.close()
+    
+    print(min(row))
+    print(max(row))
+
+#%% stuff I don't need right now:
+    
         min_list = [] #creates a blank list
         max_list = [] 
         for row in array:
@@ -55,10 +63,4 @@ def csv_min_max(filename): #Hmm, I'm a bit confused about if you direct the scri
             for n in row:
                 max_list.append(max(n))
         print(min_list)
-        print(max_list)
-    f.close()
-    
-    print(min(min_list))
-    print(max(max_list))
-
-#%%
+        print(max_list) 
