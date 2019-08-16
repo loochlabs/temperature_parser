@@ -42,54 +42,17 @@ import csv
 #
 #sys.path.append("C:\Users\katie\OneDrive - University of Canterbury\My Documents\PhD\Data Analysis\TIR\Test Data") #directory where CSVs are saved
 
-def csv_min_max(filename): #So this should work for reading one file, but what if I want it to read multiple files?
+def csv_min_max(filename, current_minimum, current_maximum): #reads file, inputs csv_minimum and csv_maximum variables
     f = open(filename, 'r') #open file
     csv_reader = csv.reader(f)
     
-    min_list = [] #creates a blank list
-    max_list = [] 
     for row in csv_reader:
-        for n in row: #loops through all items in file and adds the minimum value to the list
-            min_list.append(min(n))
         for n in row:
-            max_list.append(max(n))
-            
+            if float(n) <100:
+                current_minimum = min(current_minimum, float(n)) #here we are comparing n to the current_minimum and picking the minimum of the two
+                current_maximum = max(current_maximum, float(n)) #here we are comparing n to the current_maximum and picking the maximum of the two
+                
     f.close()
     
-    print("The min value is: ", min(min_list))
-    print("The max value is: ", max(max_list))
+    return(current_minimum, current_maximum)
 
-
-#%%
-import csv
-import sys #think I could also use the os module to achieve the same thing
-
-sys.path.append("C:\Local\OneDrive - University of Canterbury\My Documents\PhD\Data Analysis\TIR\Test Data") #directory where CSVs are saved
-
-def csv_min_max(filename): #At the moment, I seem to only be able to open a specific file, not point to a directory to retrieve the CSV(s)
-    f = open(filename, 'r') #open file
-    csv_reader = csv.reader(f)
-
-#    next(csv_reader) #ignore the first line of the CSV that has the dimensions in it-do I need this?
-    minVal = []
-    maxVal = []
-    for row in csv_reader:
-        minVal.append(row)
-        max(row)
-
-    f.close()
-    
-    print min(row)
-    print max(row)
-
-#%% stuff I don't need right now:
-    
-        min_list = [] #creates a blank list
-        max_list = [] 
-        for row in array:
-            for n in row: #loops through all items in file and adds the minimum value to the list
-                min_list.append(min(n))
-            for n in row:
-                max_list.append(max(n))
-        print(min_list)
-        print(max_list) 
