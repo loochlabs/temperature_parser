@@ -16,28 +16,50 @@ import src.CSV_min_max
 import sys
 import os
 
-if len(sys.argv) != 3 :
+if len(sys.argv) < 3 :
 	print("Invalid arguments: cmd_convert.py <flag> <filename> needed.\n")
 
-argflag = sys.argv[1]
-inname = sys.argv[2]
+args = {}
 
-#single file
-if argflag == "-f" :
-	cn.csv_to_image(inname)
+availableFileTypes = ( 'TIFF', 'PNG', 'JPEG' )
+args["imageFormat"] = 'TIFF'
+
+for i in range(len(sys.argv)) :
+	if sys.argv[i] == "-f" :
+		args["filename"] = sys.argv[i+1]
+
+	if sys.argv[i] == "-d" :
+		args["dir"] = sys.argv[i+1]
+
+	if sys.argv[i] == "-t" and sys.argv[i+1] in availableFileTypes:
+		args["imageFormat"] = sys.argv[i+1]
+
+print("Converting CSV to {} image format.".format(args["imageFormat"]))
 
 currentMin = 100
 currentMax = 0
+
+#@TODO find a cleaner way of masking these edge values
+#This cutoff value is equal to the cutoff value in mask_creator.py
+cutoff = 20.5
     
-if argflag == "-d" :
-    for f in os.listdir(inname) :
-        if ".csv" in f :
-            current_values = cn.findMinMax(inname + "/" + f, currentMin, currentMax)
-            currentMin = current_values[0]
-            currentMax = current_values[1]
+#single file
+if "filename" in args:
+	cn.CreateImage(args["filename"], filetype=args["imageFormat"])
 
-    print("Using temperature range [{} - {}]".format(currentMin, currentMax))
+#entire directory
+if "dir" in args :
+	print("Finding min and max temperature range for images...")
+	for f in os.listdir(args["dir"]) :
+		if ".csv" in f :
+			current_values = cn.FindMinMax(args["dir"] + "/" + f, currentMin, currentMax, cutoff)
+			currentMin = current_values[0]
+			currentMax = current_values[1]
 
-    for f in os.listdir(inname) :
-        if ".csv" in f :
-            cn.csv_to_image(inname + "/" + f, currentMin, currentMax)
+	print("Using temperature range [{} - {}]".format(currentMin, currentMax))
+
+	for f in os.listdir(args["dir"]) :
+		if ".csv" in f :
+			cn.CreateImage(args["dir"] + "/" + f, currentMin, currentMax, filetype=args["imageFormat"])
+
+print("\nImage processing complete!")

@@ -19,23 +19,26 @@ Description: Find the min and max temperature in a csv file in a single pass.
 	Typically this is going to be used to process a batch of csv files, hence the extra
 	min and max params.
 Params:
-	filename = csv file of temperatures
-	currentMin = minimum temp found in previous calls
-	currentMax = maximum temp found in previous calls
+	filename : csv file of temperatures
+	currentMin : minimum temp found in previous calls
+	currentMax : maximum temp found in previous calls
+	cutoff : This is the top range of our temperatures. Images have a rim of warm temperature
+		readings that we want to throw away. See mask_creator.py for more details. 
 '''
-def findMinMax(filename, currentMin, currentMax): #reads file, inputs csv_minimum and csv_maximum variables
-    f = open(filename, 'r') #open file
-    csv_reader = csv.reader(f)
-    
-    for row in csv_reader:
-        for n in row:
-            if float(n) <100:
-                currentMin = min(currentMin, float(n)) #here we are comparing n to the currentMin and picking the minimum of the two
-                currentMax = max(currentMax, float(n)) #here we are comparing n to the currentMax and picking the maximum of the two
+def FindMinMax(filename, currentMin, currentMax, cutoff): #reads file, inputs csv_minimum and csv_maximum variables
+	f = open(filename, 'r') #open file
+	csv_reader = csv.reader(f)
+
+	for row in csv_reader:
+		for n in row:
+			currentMin = min(currentMin, float(n)) #here we are comparing n to the currentMin and picking the minimum of the two
+
+			if float(n) < cutoff:
+				currentMax = max(currentMax, float(n)) #here we are comparing n to the currentMax and picking the maximum of the two
                 
-    f.close()
+	f.close()
     
-    return(currentMin, currentMax)
+	return(currentMin, currentMax)
 
 
 # Next three functions are converting temp range to an RGB colour
@@ -90,8 +93,8 @@ Destription: @TODO
 Params: @TODO
 
 '''
-def csv_to_image(filename, minTemp=0, maxTemp=100, filetype="TIFF") : 
-	print("Converting {}...".format(filename))
+def CreateImage(filename, minTemp=0, maxTemp=100, filetype="TIFF") : 
+	print("	Converting {}".format(filename))
 
 	#read csv convert to an array
 	with open(filename) as f : #pass the filename
