@@ -12,7 +12,6 @@ TODO:
 '''
 
 import src.converter as cn
-import src.CSV_min_max
 import sys
 import os
 
