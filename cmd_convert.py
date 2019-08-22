@@ -12,9 +12,12 @@ TODO:
 '''
 
 import src.converter as cn
+import src.CSV_min_max
 import sys
 import os
-import CSV_min_max
+
+if len(sys.argv) != 3 :
+	print("Invalid arguments: cmd_convert.py <flag> <filename> needed.\n")
 
 argflag = sys.argv[1]
 inname = sys.argv[2]
@@ -23,16 +26,18 @@ inname = sys.argv[2]
 if argflag == "-f" :
 	cn.csv_to_image(inname)
 
-current_minimum = 100
-current_maximum = 0
+currentMin = 100
+currentMax = 0
     
 if argflag == "-d" :
     for f in os.listdir(inname) :
         if ".csv" in f :
-            current_values = CSV_min_max.csv_min_max(inname + "/" + f, current_minimum, current_maximum)
-            current_minimum = current_values[0]
-            current_maximum = current_values[1]
-    print(current_minimum, current_maximum)
+            current_values = cn.findMinMax(inname + "/" + f, currentMin, currentMax)
+            currentMin = current_values[0]
+            currentMax = current_values[1]
+
+    print("Using temperature range [{} - {}]".format(currentMin, currentMax))
+
     for f in os.listdir(inname) :
         if ".csv" in f :
-            cn.csv_to_image(inname + "/" + f)
+            cn.csv_to_image(inname + "/" + f, currentMin, currentMax)

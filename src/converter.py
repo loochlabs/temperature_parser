@@ -1,10 +1,42 @@
-#csv to tif
+'''
+converter.py
+
+Description: Primary utility functions for converting csv temperature data to images.
+'''
+
 from PIL import Image #PIL is a python package that has the "image" function
 import numpy as np
 import os.path #Used to grab file directory
+import csv
 
-#Base RGB color channel [0-255] 
+#Global Base RGB color channel [0-255] 
 base = 255
+
+'''
+findMinMax
+
+Description: Find the min and max temperature in a csv file in a single pass. 
+	Typically this is going to be used to process a batch of csv files, hence the extra
+	min and max params.
+Params:
+	filename = csv file of temperatures
+	currentMin = minimum temp found in previous calls
+	currentMax = maximum temp found in previous calls
+'''
+def findMinMax(filename, currentMin, currentMax): #reads file, inputs csv_minimum and csv_maximum variables
+    f = open(filename, 'r') #open file
+    csv_reader = csv.reader(f)
+    
+    for row in csv_reader:
+        for n in row:
+            if float(n) <100:
+                currentMin = min(currentMin, float(n)) #here we are comparing n to the currentMin and picking the minimum of the two
+                currentMax = max(currentMax, float(n)) #here we are comparing n to the currentMax and picking the maximum of the two
+                
+    f.close()
+    
+    return(currentMin, currentMax)
+
 
 # Next three functions are converting temp range to an RGB colour
 def temp_to_b(pct) :
@@ -48,8 +80,17 @@ def temp_to_r(pct) :
 
 	return 0
 
-#Main function of interest! 
-def csv_to_image(filename, filetype="TIFF") : 
+
+'''
+csv_to_image
+
+Main function of interest! 
+
+Destription: @TODO
+Params: @TODO
+
+'''
+def csv_to_image(filename, minTemp=0, maxTemp=100, filetype="TIFF") : 
 	print("Converting {}...".format(filename))
 
 	#read csv convert to an array
@@ -75,8 +116,8 @@ def csv_to_image(filename, filetype="TIFF") :
 	maskImage.close()
 
 	#grab all content and store in 1d array of floats (converted to floats below)
-	tempMax = 20.5 #float(tempMax) #at the moment, temps are hardcoded, but we can change it to read all csvs and grab the min and max from them
-	tempMin = 14.5 #float(tempMin)
+	tempMax = float(maxTemp) #float(tempMax) #at the moment, temps are hardcoded, but we can change it to read all csvs and grab the min and max from them
+	tempMin = float(minTemp) #float(tempMin)
 	tempDiff = tempMax - tempMin #range of temps in csv
 
 	#set rgb values, apply mask image

@@ -36,23 +36,5 @@ Created on Wed Jul 31 10:45:16 2019
 
 #%% current attempt: 
 
-#import numpy as np
-import csv
-#import sys
-#
-#sys.path.append("C:\Users\katie\OneDrive - University of Canterbury\My Documents\PhD\Data Analysis\TIR\Test Data") #directory where CSVs are saved
 
-def csv_min_max(filename, current_minimum, current_maximum): #reads file, inputs csv_minimum and csv_maximum variables
-    f = open(filename, 'r') #open file
-    csv_reader = csv.reader(f)
-    
-    for row in csv_reader:
-        for n in row:
-            if float(n) <100:
-                current_minimum = min(current_minimum, float(n)) #here we are comparing n to the current_minimum and picking the minimum of the two
-                current_maximum = max(current_maximum, float(n)) #here we are comparing n to the current_maximum and picking the maximum of the two
-                
-    f.close()
-    
-    return(current_minimum, current_maximum)
 
