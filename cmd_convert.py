@@ -1,4 +1,15 @@
 #%%
+'''
+cmd_convert.py
+
+A script meant to be run from the command line in order to tie together all 
+temperature processing functions. 
+
+TODO:
+	This can probably be more Windows friendly. Converting this to a batch script might be 
+	a better option.
+
+'''
 
 import src.converter as cn
 import sys
