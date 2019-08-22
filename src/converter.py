@@ -108,7 +108,7 @@ def CreateImage(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 	content = content[1:] #disregard dimensions line - splices the array. Content starts at second line (line one and goes to end)
 
 	#create an NxMx3 rgb matrix for each csv entry "N = width, M = height, 3 is the three RGB colour channels
-	rgbArray = np.zeros((int(dimensions[1]), int(dimensions[0]), 3), 'uint8') #np.zeros fills the numpy array with zeros
+	rgbArray = np.zeros((int(dimensions[1]), int(dimensions[0]), 4), 'uint8') #np.zeros fills the numpy array with zeros
     #dimensions[0] is passing the 382 dimension and dimensions[1] is passing the 288 pixel dimension
     
 	#use image mask to remove edge values
@@ -132,11 +132,14 @@ def CreateImage(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 			rgbArray[y][x][1] = (maskData[y][x][1]/base) * temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
 			rgbArray[y][x][2] = (maskData[y][x][2]/base) * temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
 
+			#alpha channel
+			rgbArray[y][x][3] = maskData[y][x][3]
+
 	#create image file
 	im = Image.fromarray(rgbArray)
 	outfile = filename.split('.', 1)[0] #strip out old extension name (.csv)
 
-	filetypeExt = { 'TIFF': ".tif", 'PNG': '.png', 'JPEG': '.jpg' }
+	filetypeExt = { 'TIFF': ".tif", 'PNG': '.png' }
 
 	im.save(outfile + filetypeExt[filetype], filetype) #save it as a tiff and add .tif file name
     

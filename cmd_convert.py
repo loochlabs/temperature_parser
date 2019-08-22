@@ -21,7 +21,7 @@ if len(sys.argv) < 3 :
 
 args = {}
 
-availableFileTypes = ( 'TIFF', 'PNG', 'JPEG' )
+availableFileTypes = ( 'TIFF', 'PNG' )
 args["imageFormat"] = 'TIFF'
 
 for i in range(len(sys.argv)) :
