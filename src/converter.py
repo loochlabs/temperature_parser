@@ -105,6 +105,14 @@ def CreateImage(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 	for n in range(len(dimensions)) :
 		dimensions[n] = dimensions[n].strip('\n') #takes out a start new line character from end
 
+	#fallback on csv dimensions
+	if(len(dimensions) != 2) :
+		dimensions = []
+		dimensions.append(382)
+		dimensions.append(288)
+		print()
+		print(dimensions)
+
 	content = content[1:] #disregard dimensions line - splices the array. Content starts at second line (line one and goes to end)
 
 	#create an NxMx3 rgb matrix for each csv entry "N = width, M = height, 3 is the three RGB colour channels
