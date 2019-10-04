@@ -26,7 +26,7 @@ Flags
 > Create mask for removing temperature array edges. 
 
 > Convert temperature CSVs to tiffs
- > Find min and max temperatures across all temp arrays.
+ >> Find min and max temperatures across all temp arrays.
  >> Convert the temp range (based on the above min and max temps) to RGB colors.
  >> Create RGB array.
  >> Populate array with RGB values.
