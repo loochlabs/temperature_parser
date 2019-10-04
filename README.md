@@ -20,3 +20,38 @@ Flags
 * -f : process an individual file 
   * example
   * >python cmd_convert.py -f name_of_file.csv
+  
+# Workflow for TIR Image Processing
+
+> Create mask for removing temperature array edges. 
+
+> Convert temperature CSVs to tiffs
+ >> Find min and max temperatures across all temp arrays.
+ >> Convert the temp range (based on the above min and max temps) to RGB colors.
+ >> Create RGB array
+ >> Populate array with RGB values.
+ >> Apply image mask to remove edges.
+ >> Make sure orientation is landscape and image is right side up.
+ >> Create .tif file for each CSV.
+ 
+> Fisheye lens calibration
+ >> Convert calibration CSV files to tifs.
+ >> Convert to black and white.
+ >> Run opencv module to find parameters needed for distortion correction. 
+ >> Carry out distortion correction on tifs.
+ >> Save final tifs to a folder.
+ 
+> GPS data parser
+ >> Read all Optris files in a directory.
+ >> From each file get filename and add '.tif' to filename.
+ >> Get latitude and longitude. (e.g. -43.3935689, 172.2936697)
+ >> Add altitude of 304.8 to each latitude and longitude.
+ >> Create one output CSV with GPS coordinates for all tifs. 
+ 
+> Create image mosaic in Metashape
+ >> Load tifs.
+ >> Load CSV with GPS data.
+ >> Stitch images
+ >> Note: will likely need to process images in batches.
+ >> Desired outputs: jpg, kml files. Shapefile compatible with Arcmap if possible.
+
