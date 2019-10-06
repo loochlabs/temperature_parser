@@ -84,6 +84,55 @@ def temp_to_r(pct) :
 	return 0
 
 
+def CreateCalibration(filename, minTemp=0, maxTemp=100, filetype="TIFF") : 
+	print("	Creating calibration image: {}".format(filename))
+
+	#read csv convert to an array
+	with open(filename) as f : 
+		content = f.readlines() 
+
+	dimensions = content[0] 
+	dimensions = dimensions.split(",")
+	for n in range(len(dimensions)) :
+		dimensions[n] = dimensions[n].strip('\n') 
+
+	#fallback on csv dimensions
+	if(len(dimensions) != 2) :
+		dimensions = []
+		dimensions.append(382)
+		dimensions.append(288)
+		print()
+		print(dimensions)
+
+	content = content[1:] 
+
+	#create an NxMx3 rgb matrix for each csv entry "N = width, M = height, 3 is the three RGB colour channels
+	rgbArray = np.zeros((int(dimensions[1]), int(dimensions[0]), 4), 'uint8') 
+
+	#Simple Mask
+	#negative values will be written out as BLACK
+	#positive values will be written out as WHITE
+	for y in range(len(content)) : 
+		row = content[y].split(',') 
+		for x in range(len(row)) : 
+			pixel = 0
+			if float(row[x]) < 0.0 :
+				pixel = 255
+
+			rgbArray[y][x][0] = pixel
+			rgbArray[y][x][1] = pixel
+			rgbArray[y][x][2] = pixel
+
+			#alpha channel
+			rgbArray[y][x][3] = 255
+
+	#create image file
+	im = Image.fromarray(rgbArray)
+	outfile = filename.split('.', 1)[0] #strip out old extension name (.csv)
+	filetypeExt = { 'TIFF': ".tif", 'PNG': '.png' }
+	im.save(outfile + "_grey" + filetypeExt[filetype], filetype) #save it as a tiff and add .tif file name
+
+
 '''
 csv_to_image
 
@@ -151,3 +200,4 @@ def CreateImage(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 
 	im.save(outfile + filetypeExt[filetype], filetype) #save it as a tiff and add .tif file name
     
+
