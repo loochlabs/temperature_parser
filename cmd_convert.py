@@ -23,6 +23,8 @@ args = {}
 availableFileTypes = ( 'TIFF', 'PNG' )
 args["imageFormat"] = 'TIFF'
 
+createCalibration = False
+
 for i in range(len(sys.argv)) :
 	if sys.argv[i] == "-f" :
 		args["filename"] = sys.argv[i+1]
@@ -32,6 +34,10 @@ for i in range(len(sys.argv)) :
 
 	if sys.argv[i] == "-t" and sys.argv[i+1] in availableFileTypes:
 		args["imageFormat"] = sys.argv[i+1]
+
+	if sys.argv[i] == "-c":
+		print("Calibration Options enabled. Creating calibration images to use for OpenCV.")
+		createCalibration = True
 
 print("Converting CSV to {} image format.".format(args["imageFormat"]))
 
@@ -44,12 +50,15 @@ cutoff = 20.5
     
 #single file
 if "filename" in args:
-	cn.CreateImage(args["filename"], filetype=args["imageFormat"])
+	if createCalibration :
+		cn.CreateCalibration(args["filename"], filetype=args["imageFormat"])
+	else :
+		cn.CreateImage(args["filename"], filetype=args["imageFormat"])
 
 #entire directory
 if "dir" in args :
 	print("Finding min and max temperature range for images...")
-	for f in os.listdir(args["dir"]) :
+	for f in os.listdir(args["dir"]):
 		if ".csv" in f :
 			current_values = cn.FindMinMax(args["dir"] + "/" + f, currentMin, currentMax, cutoff)
 			currentMin = current_values[0]
@@ -59,6 +68,9 @@ if "dir" in args :
 
 	for f in os.listdir(args["dir"]) :
 		if ".csv" in f :
-			cn.CreateImage(args["dir"] + "/" + f, currentMin, currentMax, filetype=args["imageFormat"])
+			if createCalibration : 
+				cn.CreateCalibration(args["dir"] + "/" + f, currentMin, currentMax, filetype=args["imageFormat"])
+			else : 
+				cn.CreateImage(args["dir"] + "/" + f, currentMin, currentMax, filetype=args["imageFormat"])
 
 print("\nImage processing complete!")
