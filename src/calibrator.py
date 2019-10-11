@@ -24,27 +24,48 @@ successCount = 0
 for fname in images:
 	img = cv2.imread(fname)
 	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-	# circles
-	ret, corners = cv2.findChessboardCorners(gray, (7,7), None)
+	success, corners = cv2.findChessboardCorners(gray, (7,7), None)
 
 	# If found, add object points, image points (after refining them)
-	if ret == True:
-		print("Success! Found grid lines and writing to {}".format(fname))
-		objpoints.append(objp)
+	if success :
+		print("Success! Found grid lines in {}".format(fname))
 
-		corners2 = cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
+		objpoints.append(objp)
+		corners2 = cv2.cornerSubPix(gray, corners, (11,11), (-1,-1), criteria)
 		imgpoints.append(corners2)
 
 		# Draw and display the corners
-		img = cv2.drawChessboardCorners(img, (7,7), corners2,ret)
+		#img = cv2.drawChessboardCorners(img, (7,7), corners2, ret)
 		#cv2.imshow('img',img)
-		cv2.imwrite(fname, img)
-		cv2.waitKey(5000)
+		#cv2.imwrite(fname, img)
+		#cv2.waitKey(5000)
 
 		successCount += 1
 
-print("Successfully processed {} of {} images".format(successCount, len(images)))
-        
+print("Successfully found grids {} of {} images".format(successCount, len(images)))
 
-#cv2.destroyAllWindows()
+ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None,None)
+        
+#Undistort image
+print("Beginning undistortion process.")
+
+distImagePath = "../temp/test_csv/Ellesmere_IR_flight01_1000ft_000055.jpg"
+distImage = cv2.imread(distImagePath)
+
+h,w = distImage.shape[:2]
+print("{} {}".format(h,w))
+
+newCameraMtx, roi = cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),0,(w,h))
+
+#TODO Write out the new camera matrix to a txt file to reuse for future runs
+#	There is no reason to run this every time once we have a correct calibration
+
+# undistort
+undistortedImage = cv2.undistort(distImage, mtx, dist, None, newCameraMtx)
+
+# crop the image
+#print(roi)
+#x,y,w,h = roi
+#undistortedImage = undistortedImage[y:y+h, x:x+w]
+
+cv2.imwrite("holy_sheet_it_works.jpg", undistortedImage)
