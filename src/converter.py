@@ -101,8 +101,6 @@ def CreateCalibration(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 		dimensions = []
 		dimensions.append(382)
 		dimensions.append(288)
-		print()
-		print(dimensions)
 
 	content = content[1:] 
 
