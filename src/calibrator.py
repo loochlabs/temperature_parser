@@ -3,6 +3,7 @@
 import numpy as np
 import cv2
 import glob
+import os
 
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -29,43 +30,44 @@ for fname in images:
 	# If found, add object points, image points (after refining them)
 	if success :
 		print("Success! Found grid lines in {}".format(fname))
+		successCount += 1
 
 		objpoints.append(objp)
 		corners2 = cv2.cornerSubPix(gray, corners, (11,11), (-1,-1), criteria)
 		imgpoints.append(corners2)
 
-		# Draw and display the corners
-		#img = cv2.drawChessboardCorners(img, (7,7), corners2, ret)
-		#cv2.imshow('img',img)
-		#cv2.imwrite(fname, img)
-		#cv2.waitKey(5000)
 
-		successCount += 1
-
-print("Successfully found grids {} of {} images".format(successCount, len(images)))
+print("Successfully found patterns for {} of {} images".format(successCount, len(images)))
 
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None,None)
         
 #Undistort image
 print("Beginning undistortion process.")
 
-distImagePath = "../temp/test_csv/Ellesmere_IR_flight01_1000ft_000055.jpg"
-distImage = cv2.imread(distImagePath)
+#distImagePath = "../temp/test_csv/Ellesmere_IR_flight01_1000ft_000055.jpg"
+distImageDir = "../temp/test_distortion"
 
-h,w = distImage.shape[:2]
-print("{} {}".format(h,w))
+for filename in os.listdir(distImageDir):
+	if ".jpg" in filename :
+		distImage = cv2.imread(distImageDir + '/' + filename)
 
-newCameraMtx, roi = cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),0,(w,h))
+		h,w = distImage.shape[:2]
+		newCameraMtx, roi = cv2.getOptimalNewCameraMatrix(mtx,dist,(w,h),0,(w,h))
 
-#TODO Write out the new camera matrix to a txt file to reuse for future runs
-#	There is no reason to run this every time once we have a correct calibration
+		#TODO Write out the new camera matrix to a txt file to reuse for future runs
+		#	There is no reason to run this every time once we have a correct calibration
 
-# undistort
-undistortedImage = cv2.undistort(distImage, mtx, dist, None, newCameraMtx)
+		# undistort
+		undistortedImage = cv2.undistort(distImage, mtx, dist, None, newCameraMtx)
 
-# crop the image
-#print(roi)
-#x,y,w,h = roi
-#undistortedImage = undistortedImage[y:y+h, x:x+w]
+		# crop the image
+		#print(roi)
+		#x,y,w,h = roi
+		#undistortedImage = undistortedImage[y:y+h, x:x+w]
 
-cv2.imwrite("holy_sheet_it_works.jpg", undistortedImage)
+		#write out undistorted image
+		outname = filename.replace('.', "_flat.")
+		cv2.imwrite(distImageDir + "/" + outname, undistortedImage)
+
+
+
