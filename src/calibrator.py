@@ -45,7 +45,7 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.sh
 print("Beginning undistortion process.")
 
 #distImagePath = "../temp/test_csv/Ellesmere_IR_flight01_1000ft_000055.jpg"
-distImageDir = "C:/Users/katie/OneDrive - University of Canterbury/My Documents/PhD/Data Analysis/TIR/temperature_parser/data/Test_data_6_Nov"
+distImageDir = "C:/Users/katie/OneDrive - University of Canterbury/My Documents/PhD/Data Analysis/TIR/temperature_parser/data/Test_data_6_Nov/Lap_2"
 
 for filename in os.listdir(distImageDir):
 	if ".tif" in filename :
@@ -68,6 +68,8 @@ for filename in os.listdir(distImageDir):
 		#write out undistorted image
 		outname = filename.replace('.', "_flat.")
 		cv2.imwrite(distImageDir + "/" + outname, undistortedImage)
+        
+print("Image calibration complete!")
 
 
 
