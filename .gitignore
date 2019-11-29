@@ -1,6 +1,7 @@
 #gitignore file
 local_dev
 temp
+Katie_Stuff
 
 #art
 images/*.fla
