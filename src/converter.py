@@ -4,9 +4,9 @@ converter.py
 Description: Primary utility functions for converting csv temperature data to images.
 '''
 
-from PIL import Image #PIL is a python package that has the "image" function
+from PIL import Image 
 import numpy as np
-import os.path #Used to grab file directory
+import os.path 
 import csv
 
 #Global Base RGB color channel [0-255] 
@@ -25,16 +25,16 @@ Params:
 	cutoff : This is the top range of our temperatures. Images have a rim of warm temperature
 		readings that we want to throw away. See mask_creator.py for more details. 
 '''
-def FindMinMax(filename, currentMin, currentMax, cutoff): #reads file, inputs csv_minimum and csv_maximum variables
-	f = open(filename, 'r') #open file
+def FindMinMax(filename, currentMin, currentMax, cutoff): 
+	f = open(filename, 'r') 
 	csv_reader = csv.reader(f)
 
 	for row in csv_reader:
 		for n in row:
-			currentMin = min(currentMin, float(n)) #here we are comparing n to the currentMin and picking the minimum of the two
+			currentMin = min(currentMin, float(n)) 
 
 			if float(n) < cutoff:
-				currentMax = max(currentMax, float(n)) #here we are comparing n to the currentMax and picking the maximum of the two
+				currentMax = max(currentMax, float(n)) 
                 
 	f.close()
     
@@ -126,9 +126,9 @@ def CreateCalibration(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 
 	#create image file
 	im = Image.fromarray(rgbArray)
-	outfile = filename.split('.', 1)[0] #strip out old extension name (.csv)
+	outfile = filename.split('.', 1)[0] 
 	filetypeExt = { 'TIFF': ".tif", 'PNG': '.png' }
-	im.save(outfile + "_grey" + filetypeExt[filetype], filetype) #save it as a tiff and add .tif file name
+	im.save(outfile + "_grey" + filetypeExt[filetype], filetype) 
 
 
 '''
@@ -144,45 +144,44 @@ def CreateImage(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 	print("	Converting {}".format(filename))
 
 	#read csv convert to an array
-	with open(filename) as f : #pass the filename
-		content = f.readlines() #reading all the lines in the CSV
+	with open(filename) as f : 
+		content = f.readlines() 
 
-	dimensions = content[0] #[0] indicates the first row - so this is grabbing the content from the first row
-	dimensions = dimensions.split(",") #this splits the dimensions at the comma - i.e., 382, 288 to 382 and 288
+	dimensions = content[0] 
+	dimensions = dimensions.split(",") 
 	for n in range(len(dimensions)) :
-		dimensions[n] = dimensions[n].strip('\n') #takes out a start new line character from end
+		dimensions[n] = dimensions[n].strip('\n') 
 
 	#fallback on csv dimensions
 	if(len(dimensions) != 2) :
 		dimensions = []
 		dimensions.append(382)
 		dimensions.append(288)
-		print()
-		print(dimensions)
 
-	content = content[1:] #disregard dimensions line - splices the array. Content starts at second line (line one and goes to end)
+	#disregard dimensions line - splices the array. Content starts at second line (line one and goes to end)
+	content = content[1:] 
 
 	#create an NxMx3 rgb matrix for each csv entry "N = width, M = height, 3 is the three RGB colour channels
-	rgbArray = np.zeros((int(dimensions[1]), int(dimensions[0]), 4), 'uint8') #np.zeros fills the numpy array with zeros
     #dimensions[0] is passing the 382 dimension and dimensions[1] is passing the 288 pixel dimension
+	rgbArray = np.zeros((int(dimensions[1]), int(dimensions[0]), 4), 'uint8') 
     
 	#use image mask to remove edge values
 	maskFilename = "/../images/mask.png" #name of file
-	maskImage = Image.open(os.path.dirname(__file__) + maskFilename) #points to the filepath
-	maskImage.load() #loads image
-	maskData = np.asarray(maskImage) #creates a mask with the mask image
+	maskImage = Image.open(os.path.dirname(__file__) + maskFilename) 
+	maskImage.load() 
+	maskData = np.asarray(maskImage) 
 	maskImage.close()
 
 	#grab all content and store in 1d array of floats (converted to floats below)
-	tempMax = float(maxTemp) #float(tempMax) #at the moment, temps are hardcoded, but we can change it to read all csvs and grab the min and max from them
-	tempMin = float(minTemp) #float(tempMin)
-	tempDiff = tempMax - tempMin #range of temps in csv
+	tempMax = float(maxTemp) 
+	tempMin = float(minTemp) 
+	tempDiff = tempMax - tempMin 
 
 	#set rgb values, apply mask image
-	for y in range(len(content)) : #go through each pixel in the csv and assign colour, y = row number
-		row = content[y].split(',') #splits each value in the row by the comma
-		for x in range(len(row)) : #for each temp value set colour
-			#set pixel color based on temperature reading
+	#go through each pixel in the csv and assign colour, y = row number
+	for y in range(len(content)) : 
+		row = content[y].split(',') 
+		for x in range(len(row)) : 
 			rgbArray[y][x][0] = (maskData[y][x][0]/base) * temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff))
 			rgbArray[y][x][1] = (maskData[y][x][1]/base) * temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
 			rgbArray[y][x][2] = (maskData[y][x][2]/base) * temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
@@ -192,10 +191,10 @@ def CreateImage(filename, minTemp=0, maxTemp=100, filetype="TIFF") :
 
 	#create image file
 	im = Image.fromarray(rgbArray)
-	outfile = filename.split('.', 1)[0] #strip out old extension name (.csv)
+	outfile = filename.split('.', 1)[0] 
 
 	filetypeExt = { 'TIFF': ".tif", 'PNG': '.png' }
 
-	im.save(outfile + filetypeExt[filetype], filetype) #save it as a tiff and add .tif file name
+	im.save(outfile + filetypeExt[filetype], filetype) 
     
 
