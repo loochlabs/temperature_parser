@@ -1,0 +1,8 @@
+{
+    "calibrationImagePath": "../images/calibration",
+    "datapath": "../data/examples",
+    "maskCutoff": 20.5,
+    "maskFilename": "../images/mask.png",
+    "maxTemperature": 20.4,
+    "minTemperature": 14.3
+}

@@ -6,5 +6,8 @@ Katie_Stuff
 #art
 images/*.fla
 
+#unity project
+temperature_parser
+
 #python specific
 __pycache__/
