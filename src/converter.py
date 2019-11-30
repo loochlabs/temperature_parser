@@ -8,6 +8,7 @@ from PIL import Image
 import numpy as np
 import os.path 
 import csv
+import json
 
 class TemperatureParser :
 
@@ -16,14 +17,14 @@ class TemperatureParser :
 	maskData = []
 
 	config = {}
-	configFilename = "config.json"
+	configFilename = "../config.json"
 
 	def __init__(self) :
 		#use image mask to remove edge values
-		with open(configFilename) as jsonData :
-			config = json.load(jsonData)
+		with open(self.configFilename) as jsonData :
+			self.config = json.load(jsonData)
 
-		maskFilename = config["maskFilename"] #name of file
+		maskFilename = self.config["maskFilename"] #name of file
 		maskImage = Image.open(os.path.dirname(__file__) + "/" + maskFilename) 
 		maskImage.load() 
 		self.maskData = np.asarray(maskImage) 
@@ -201,4 +202,10 @@ class TemperatureParser :
 		filetypeExt = { 'TIFF': ".tif", 'PNG': '.png' }
 		outname = filename.replace(".csv", filetypeExt[filetype])
 		im.save(outname, filetype) 
-    
+
+	def CreateImages(self) :
+		for file in os.listdir(self.config["datapath"]) :
+			if ".csv" in file :
+				self.CreateImage(self.config["datapath"] + "/" + file, self.config["minTemperature"], self.config["maxTemperature"])
+
+		    

@@ -8,7 +8,7 @@ import json
 
 class Calibrator :
 
-	configFilename = "config.json"
+	configFilename = "../config.json"
 	config = {}
 
 	#cached camera matrix
