@@ -51,7 +51,8 @@ def read_optris(filename) :
 
 #run Optris reader function
 for filename in os.listdir(file_directory):
-    csv_list.append(read_optris(filename))
+    if ".optris" in filename :
+        csv_list.append(read_optris(filename))
     
 #update date in filename as needed        
 with open("TIR_GPS_Data_6Nov.csv","w") as new_file:
