@@ -40,20 +40,15 @@ A Python library for converting Optris temperature readings into undistorted/fla
    * Desired outputs: jpg, kml files. Shapefile compatible with Arcmap if possible.  
    
 # Getting Started
-## Intermediate script for converting csv to tif
+## Configs    
+Open config.json    
+Set your target data folder.   
+Save & Close    
 
-Commandline arguments
->python cmd_convert.py \<flag\> \<filename\> 
+## Run Everything    
+Run bin/run_all.bat    
 
-Flags
-* -d : process all csv's in a directory
-  * example
-  * >python cmd_convert.py -d path/to/your/directory
 
-* -f : process an individual file 
-  * example
-  * >python cmd_convert.py -f name_of_file.csv
-  
 ## Expected Distorted Output
 ![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/heatmap_example.png)
 
