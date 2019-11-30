@@ -5,6 +5,15 @@ A Python library for converting Optris temperature readings into undistorted/fla
 * numpy
 * opencv
 
+# Getting Started
+## Configs    
+Open config.json    
+Set your target data folder.   
+Save & Close    
+
+## Run Everything    
+Run bin/run_all.bat    
+
 # Workflow for TIR Image Processing
 
 1. Create mask for removing temperature array edges. 
@@ -38,16 +47,6 @@ A Python library for converting Optris temperature readings into undistorted/fla
    * Stitch images.  
    * Note: will likely need to process images in batches.  
    * Desired outputs: jpg, kml files. Shapefile compatible with Arcmap if possible.  
-   
-# Getting Started
-## Configs    
-Open config.json    
-Set your target data folder.   
-Save & Close    
-
-## Run Everything    
-Run bin/run_all.bat    
-
 
 ## Expected Distorted Output
 ![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/heatmap_example.png)
