@@ -25,7 +25,8 @@ class TemperatureParser :
 			self.config = json.load(jsonData)
 
 		maskFilename = self.config["maskFilename"] #name of file
-		maskImage = Image.open(os.path.dirname(__file__) + "/" + maskFilename) 
+		maskImage = Image.open(maskFilename)
+		#maskImage = Image.open(os.path.dirname(__file__) + "/" + maskFilename) 
 		maskImage.load() 
 		self.maskData = np.asarray(maskImage) 
 		maskImage.close()
@@ -61,42 +62,55 @@ class TemperatureParser :
 
 	# Next three functions are converting temp range to an RGB colour
 	def temp_to_b(self,pct) :
-		tmin = 0.25
-		tmax = 0.5
+		tmin = 0.5
+		tmax = 0.67
 
 		if pct <= tmin :
 			return self.base
 
-		if tmin < pct <= tmax :
-			return self.base - int(self.base*(pct/tmax)) #[255-0]
+		if tmin < pct and pct <= tmax :
+			trange = tmax - tmin
+			tdiff = tmax - pct
+			tpct = 1 - (float(tdiff/trange))
+			return self.base - int(self.base*tpct) #[255-0]
 
 		return 0
 
 	def temp_to_g(self,pct) :
 		tmin = 0
-		tmid1 = 0.25
-		tmid2 = 0.75
+		tmid1 = 0.50
+		tmid2 = 0.83
 		tmax = 1.0
 
-		if tmin < pct <= tmid1 :
-			return int(self.base*(pct/tmid1)) #[0-255]
+		if tmin < pct and pct <= tmid1 :
+			trange = tmid1 - tmin
+			tdiff = tmid1 - pct
+			tpct = 1 - (float(tdiff/trange))
+			return int(self.base*tpct) #[0-255]
 
-		if tmid1 < pct <= tmid2 :
+		if tmid1 < pct and pct <= tmid2 :
 			return self.base
 
-		if tmid2 < pct <= tmax :
-			return self.base - int(self.base*(pct/tmax)) #[255-0]
+		if tmid2 < pct and pct <= tmax :
+			trange = tmax - tmid2
+			tdiff = tmax - pct
+			tpct = 1 - (float(tdiff/trange))
+			return self.base - int(self.base*tpct) #[255-0]
 
 		return 0
 
 	def temp_to_r(self,pct) :
-		tmin = 0.5
-		tmid = 0.75
+		tmin = 0.67
+		tmid = 0.83
+		tmax = 1.0
 
-		if tmin < pct <= tmid :
-			return int(self.base*(pct/tmid)) #[0-255]
+		if tmin < pct and pct <= tmid :
+			trange = tmid - tmin
+			tdiff = tmid - pct
+			tpct = 1 - (float(tdiff/trange))
+			return int(self.base*tpct) #[0-255]
 
-		if tmid < pct :
+		if tmid < pct and pct <= tmax:
 			return self.base
 
 		return 0
@@ -184,16 +198,17 @@ class TemperatureParser :
 		tempMax = float(maxTemp) 
 		tempMin = float(minTemp) 
 		tempDiff = tempMax - tempMin 
+		#print("{},{},{}".format(tempMax, tempMin, tempDiff))
 
 		#set rgb values, apply mask image
 		#go through each pixel in the csv and assign colour, y = row number
 		for y in range(len(content)) : 
 			row = content[y].split(',') 
 			for x in range(len(row)) : 
-				rgbArray[y][x][0] = (self.maskData[y][x][0]/self.base) * self.temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff))
-				rgbArray[y][x][1] = (self.maskData[y][x][1]/self.base) * self.temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
-				rgbArray[y][x][2] = (self.maskData[y][x][2]/self.base) * self.temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
-
+				rgbArray[y][x][0] = int(self.maskData[y][x][0]/self.base) * self.temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff))
+				rgbArray[y][x][1] = int(self.maskData[y][x][1]/self.base) * self.temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
+				rgbArray[y][x][2] = int(self.maskData[y][x][2]/self.base) * self.temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
+				#print(rgbArray[y][x])
 				#alpha channel
 				rgbArray[y][x][3] = self.maskData[y][x][3]
 

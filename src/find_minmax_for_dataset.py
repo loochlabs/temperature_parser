@@ -29,6 +29,7 @@ parser = TemperatureParser()
 
 for file in os.listdir(config["datapath"]):
 	if ".csv" in file :
+		print("Finding min/max in " + file)
 		current_values = parser.FindMinMax(config["datapath"] + "/" + file, currentMin, currentMax, cutoff)
 		currentMin = current_values[0]
 		currentMax = current_values[1]

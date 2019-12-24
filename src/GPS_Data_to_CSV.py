@@ -11,7 +11,7 @@ import csv
 import os
 
 #enter file directory here where Optris files are saved
-file_directory = "C:/Local/OneDrive - University of Canterbury/My Documents/PhD/Data Analysis/TIR/temperature_parser/data/Test_data_6_Nov/GPS_Files"
+file_directory = "E:/TIR_Data/dotOptris_output_surveyonly_10fps"
 
 #create a list of the data for the CSV
 csv_list = []
@@ -35,9 +35,16 @@ def read_optris(filename) :
     #grab relevant values in the parsed lines
     gpsarray = gpstrimmed.split(',')[3:7]
 
+
+    #these are the items that go in the list    
+    outputName = filename.split("/")[-1].replace(".optris", ".tif")
+    
     #convert to an appropriate lat/long format
-    latitude = float(gpsarray[0])/100
-    longitude = float(gpsarray[2])/100
+    try :
+        latitude = float(gpsarray[0])/100
+        longitude = float(gpsarray[2])/100
+    except :
+        return {"Filename":outputName, "Latitude":"NaN", "Longitude":"NaN", "Altitude":304.8}
 
     #give our lat/long the correct sign for South, West
     if gpsarray[1].lower() == 's' :
@@ -46,21 +53,22 @@ def read_optris(filename) :
     if gpsarray[3].lower() == 'w' :
         longitude *= -1
 
-    #these are the items that go in the list    
-    return [filename + ".tif", latitude, longitude, "304.8"]
+    return {"Filename":outputName, "Latitude":latitude, "Longitude":longitude, "Altitude":304.8}
 
 #run Optris reader function
 for filename in os.listdir(file_directory):
     if ".optris" in filename :
-        csv_list.append(read_optris(filename))
+        print(filename)
+        csv_list.append(read_optris(file_directory + "/" + filename))
     
 #update date in filename as needed        
-with open("TIR_GPS_Data_6Nov.csv","w") as new_file:
-    fieldnames = ["Filename", "Latitude", "Longitude", "Altitude"]
-    csv_writer = csv.DictWriter(new_file,delimiter = ",",fieldnames=fieldnames)
-    csv_writer.writeheader()
-    
+with open("../data/TIR_GPS_Data_FullDataset.csv","w", newline='') as csv_file:
+    #fieldnames = [bytearray('Filename'.encode()), bytearray('Latitude'.encode()), bytearray('Longitude'.encode()), bytearray('Altitude'.encode())]
+    fieldnames = ['Filename', 'Latitude', 'Longitude', 'Altitude']
+    csv_writer = csv.DictWriter(csv_file, delimiter = ",", fieldnames=fieldnames)
+    csv_writer.writeheader()    
     #for row in csv_writer:
-    csv_writer.writerow(csv_list)
-    csv_writer.close()
+    #print(csv_list)
+    #csv_writer.writerows(fieldnames)
+    csv_writer.writerows(csv_list)
         
