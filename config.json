@@ -1,8 +1,9 @@
 {
     "calibrationImagePath": "../images/calibration",
-    "datapath": "../data/examples",
+    "datapath": "../temp/displate_images",
     "maskCutoff": 20.5,
     "maskFilename": "../images/mask.png",
-    "maxTemperature": 20.4,
-    "minTemperature": 14.3
+    "maxTemperature": 20.5,
+    "minTemperature": 15.3,
+    "imageScale":12
 }

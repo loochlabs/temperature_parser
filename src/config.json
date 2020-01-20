@@ -1,8 +1,8 @@
 {
-    "datapath": "data/examples",
+    "datapath": "temp/CSV_output_surveyonly_10fps",
     "maskFilename" : "images/mask.png",
     "calibrationImagePath" : "images/calibration",
     "maskCutoff": 20.5,
-    "maxTemperature": 20.4,
-    "minTemperature": 14.3
+    "maxTemperature": 0,
+    "minTemperature": 100
 }

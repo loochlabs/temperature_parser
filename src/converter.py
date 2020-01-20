@@ -115,6 +115,13 @@ class TemperatureParser :
 
 		return 0
 
+	def CreateRGBA(self, temperture, tdiff, tmax) : 
+		rgba = []
+		rgba.append(self.temp_to_r(1 - ((tmax - float(temperture)) / tdiff)))
+		rgba.append(self.temp_to_g(1 - ((tmax - float(temperture)) / tdiff)))
+		rgba.append(self.temp_to_b(1 - ((tmax - float(temperture)) / tdiff)))
+		rgba.append(255)
+		return rgba
 
 	def CreateCalibration(self, filename, minTemp=0, maxTemp=100, filetype="TIFF") : 
 		print("	Creating calibration image: {}".format(filename))
@@ -222,5 +229,71 @@ class TemperatureParser :
 		for file in os.listdir(self.config["datapath"]) :
 			if ".csv" in file :
 				self.CreateImage(self.config["datapath"] + "/" + file, self.config["minTemperature"], self.config["maxTemperature"])
+
+	def CreateScaledImage(self, filename, scale=10.0) :
+		#read csv convert to an array
+		with open(filename) as f : 
+			content = f.readlines() 
+
+		'''
+		dimensions = content[0] 
+		dimensions = dimensions.split(",") 
+		for n in range(len(dimensions)) :
+			dimensions[n] = dimensions[n].strip('\n') 
+
+		#fallback on csv dimensions
+		width = 382 * scale
+		height = 288 * scale
+		if(len(dimensions) != 2) :
+			dimensions = []
+			dimensions.append(width)
+			dimensions.append(height)
+		'''
+		dimensions = [(382*scale), (288*scale)]
+
+		#disregard dimensions line - splices the array. Content starts at second line (line one and goes to end)
+		content = content[1:] 
+
+		#create an NxMx3 rgb matrix for each csv entry "N = width, M = height, 3 is the three RGB colour channels
+	    #dimensions[0] is passing the 382 dimension and dimensions[1] is passing the 288 pixel dimension
+		rgbArray = np.zeros((int(dimensions[1]), int(dimensions[0]), 4), 'uint8') 
+	    
+		#grab all content and store in 1d array of floats (converted to floats below)
+		tempMax = float(self.config["maxTemperature"])
+		tempMin = float(self.config["minTemperature"])
+		tempDiff = tempMax - tempMin 
+
+		#set rgb values, apply mask image
+		#go through each pixel in the csv and assign colour, y = row number
+		for y in range(len(content)-int(scale)) : 
+			row = content[y].split(',') 
+			for x in range(len(row)-int(scale)) : 
+				b1 = float(content[y+1].split(',')[x])
+				b1diff = b1 - float(row[x])
+
+				#b2 = content(y+1).split(',')[x+1]
+				#b2diff = b2 - row[x]
+
+				b3 = float(row[x+1])
+				b3diff = b3 - float(row[x])
+
+				for sy in range(int(scale)):
+					for sx in range(int(scale)) :
+						xcoord = int(x*scale) + sx
+						ycoord = int(y*scale) + sy
+						value = float(row[x]) + (b1diff * sx/scale)
+						rgbArray[ycoord][xcoord] = self.CreateRGBA(value, tempDiff, tempMax)
+
+		#create image file
+		im = Image.fromarray(rgbArray)
+		outname = filename.replace(".csv", '.png')
+		im.save(outname, 'PNG') 
+
+	def CreateScaledImages(self) :
+		for file in os.listdir(self.config["datapath"]) :
+			if ".csv" in file :
+				self.CreateScaledImage(self.config["datapath"] + "/" + file, self.config["imageScale"])
+
+
 
 		    
