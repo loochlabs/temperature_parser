@@ -74,6 +74,9 @@ class TemperatureParser :
 			tpct = 1 - (float(tdiff/trange))
 			return self.base - int(self.base*tpct) #[255-0]
 
+		if pct > 1 :
+			return self.base
+
 		return 0
 
 	def temp_to_g(self,pct) :
@@ -97,6 +100,9 @@ class TemperatureParser :
 			tpct = 1 - (float(tdiff/trange))
 			return self.base - int(self.base*tpct) #[255-0]
 
+		if pct > 1 :
+			return self.base
+
 		return 0
 
 	def temp_to_r(self,pct) :
@@ -111,6 +117,9 @@ class TemperatureParser :
 			return int(self.base*tpct) #[0-255]
 
 		if tmid < pct and pct <= tmax:
+			return self.base
+
+		if pct > 1 :
 			return self.base
 
 		return 0
