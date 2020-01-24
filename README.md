@@ -6,7 +6,7 @@ A Python library for converting Optris temperature readings into undistorted/fla
 * opencv
 
 # Getting Started
-## Configs    
+## Setup input data  
 Open config.json    
 Set your target data folder.   
 Save & Close    
