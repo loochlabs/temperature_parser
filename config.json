@@ -1,8 +1,8 @@
 {
     "calibrationImagePath": "../images/calibration",
-    "datapath": "../data/examples",
+    "datapath": "D:/TIR_Data/CSV_output_surveyonly_10fps_part2",
     "maskCutoff": 20.5,
     "maskFilename": "../images/mask.png",
-    "maxTemperature": 20.4,
-    "minTemperature": 14.3
+    "maxTemperature": 20.49,
+    "minTemperature": 15
 }

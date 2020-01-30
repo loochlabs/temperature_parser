@@ -36,7 +36,7 @@ def read_optris(filename) :
     gpsarray = gpstrimmed.split(',')[3:7]
 
 
-    #these are the items that go in the list    
+    #change output name   
     outputName = filename.split("/")[-1].replace(".optris", ".tif")
     
     #convert to an appropriate lat/long format
@@ -61,7 +61,7 @@ for filename in os.listdir(file_directory):
         print(filename)
         csv_list.append(read_optris(file_directory + "/" + filename))
     
-#update date in filename as needed        
+#write to CSV       
 with open("../data/TIR_GPS_Data_FullDataset.csv","w", newline='') as csv_file:
     #fieldnames = [bytearray('Filename'.encode()), bytearray('Latitude'.encode()), bytearray('Longitude'.encode()), bytearray('Altitude'.encode())]
     fieldnames = ['Filename', 'Latitude', 'Longitude', 'Altitude']
