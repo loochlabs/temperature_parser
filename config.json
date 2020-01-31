@@ -1,8 +1,10 @@
 {
     "calibrationImagePath": "../images/calibration",
-    "datapath": "D:/TIR_Data/CSV_output_surveyonly_10fps_part2",
+    "datapath": "../data/examples",
     "maskCutoff": 20.5,
     "maskFilename": "../images/mask.png",
-    "maxTemperature": 20.49,
-    "minTemperature": 15
+    "maxTemperature": 20.4,
+    "minTemperature": 14.3,
+    "optrisData": "../data/optris",
+    "optrisOutput" : "../data/optris/optris_mapping.csv"
 }

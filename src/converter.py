@@ -26,7 +26,6 @@ class TemperatureParser :
 
 		maskFilename = self.config["maskFilename"] #name of file
 		maskImage = Image.open(maskFilename)
-		#maskImage = Image.open(os.path.dirname(__file__) + "/" + maskFilename) 
 		maskImage.load() 
 		self.maskData = np.asarray(maskImage) 
 		maskImage.close()
@@ -207,17 +206,17 @@ class TemperatureParser :
 		tempMax = float(maxTemp) 
 		tempMin = float(minTemp) 
 		tempDiff = tempMax - tempMin 
-		#print("{},{},{}".format(tempMax, tempMin, tempDiff))
 
 		#set rgb values, apply mask image
 		#go through each pixel in the csv and assign colour, y = row number
 		for y in range(len(content)) : 
 			row = content[y].split(',') 
 			for x in range(len(row)) : 
-				rgbArray[y][x][0] = int(self.maskData[y][x][0]/self.base) * self.temp_to_r(1 - ((tempMax - float(row[x])) / tempDiff))
-				rgbArray[y][x][1] = int(self.maskData[y][x][1]/self.base) * self.temp_to_g(1 - ((tempMax - float(row[x])) / tempDiff))
-				rgbArray[y][x][2] = int(self.maskData[y][x][2]/self.base) * self.temp_to_b(1 - ((tempMax - float(row[x])) / tempDiff))
-				#print(rgbArray[y][x])
+				percent = 1 - ((tempMax - float(row[x])) / tempDiff)
+				rgbArray[y][x][0] = int(self.maskData[y][x][0]/self.base) * self.temp_to_r(percent)
+				rgbArray[y][x][1] = int(self.maskData[y][x][1]/self.base) * self.temp_to_g(percent)
+				rgbArray[y][x][2] = int(self.maskData[y][x][2]/self.base) * self.temp_to_b(percent)
+				
 				#alpha channel
 				rgbArray[y][x][3] = self.maskData[y][x][3]
 
