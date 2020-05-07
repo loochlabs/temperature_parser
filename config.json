@@ -5,6 +5,6 @@
     "maskFilename": "../images/mask.png",
     "maxTemperature": 20.4,
     "minTemperature": 14.3,
-    "optrisData": "../data/optris",
+    "optrisData": "D:/TIR_Data/dotOptris_output_surveyonly_10fps",
     "optrisOutput" : "../data/optris/optris_mapping.csv"
 }
