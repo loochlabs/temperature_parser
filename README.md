@@ -19,10 +19,10 @@ Run bin/run_all.bat
 
 ## Utility Steps
 ### Mask Creation
-python ./util/mask_creator.py
-    * Create mask for removing outlier temperatures along edges of input photograph. 
-    * This allows the final image to exclude values.
-    * See images/mask.png for example output.
+python ./util/mask_creator.py    
+    * Create mask for removing outlier temperatures along edges of input photograph.     
+    * This allows the final image to exclude values.    
+    * See images/mask.png for example output.    
 
 ## Processing Steps
 1. Convert temperature CSVs to tiffs  
