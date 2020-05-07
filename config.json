@@ -6,5 +6,8 @@
     "maxTemperature": 20.4,
     "minTemperature": 14.3,
     "optrisData": "../data/optris",
-    "optrisOutput" : "../data/optris/optris_mapping.csv"
+    "optrisOutput" : "../data/optris/optris_mapping.csv",
+    "LegendFileName" : "../images/legend.csv",
+    "LegendWidth" : 512,
+    "LegendHeight" : 64
 }
