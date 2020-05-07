@@ -1,5 +1,5 @@
 # Temperature Processor
-A Python library for converting Optris temperature readings into undistorted/flattened images. 
+A Python library for converting .CSV files containing thermal infrared measurements to .TIF image files. Scripts here were developed for TIR images taken with an Optris PI 450 camera with an 80 degree wide-angle lens. 
 
 ## Dependencies
 * numpy
@@ -20,7 +20,8 @@ Run bin/run_all.bat
 ## Utility Steps
 ### Mask Creation
 python ./util/mask_creator.py    
-    * Create mask for removing outlier temperatures along edges of input photograph.     
+    * Create mask for removing outlier temperatures along edges of input CSVs.
+    * Note: This is only needed if there is unwanted data on the edges of the input files.
     * This allows the final image to exclude values.    
     * See images/mask.png for example output.    
 
@@ -40,7 +41,7 @@ python ./util/mask_creator.py
    * Read all Optris files in a directory.  
    * From each file get filename and add '.tif' to filename.  
    * Get latitude and longitude. (e.g. -43.3935689, 172.2936697).  
-   * Add altitude of 304.8 to each latitude and longitude.  
+   * Add altitude of 304.8 to each latitude and longitude. Note: will need to edit altitude for your specific dataset.  
    * Create one output CSV with GPS coordinates for all tifs.   
 
 ## Expected Distorted Output
