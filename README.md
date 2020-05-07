@@ -44,7 +44,7 @@ python ./util/mask_creator.py
    * Add altitude of 304.8 to each latitude and longitude. Note: will need to edit altitude for your specific dataset.  
    * Create one output CSV with GPS coordinates for all tifs.   
 
-## Expected Distorted Output
+## Expected Output
 ![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/heatmap_example.png)
 
 ## Temperature Color Range
