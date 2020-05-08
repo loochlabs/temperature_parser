@@ -48,7 +48,7 @@ python ./util/mask_creator.py
 ![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/Final_Output_Example.tif)
 
 ## Temperature Color Range
-![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/temperature_range.png)
+![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/legend.png)
 
 
 
