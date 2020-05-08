@@ -8,9 +8,9 @@ A Python library for converting .CSV files containing thermal infrared measureme
 
 # Getting Started
 ## Setup Input Data  
-Open config.json    
-Set your target data folder.   
-Save & Close    
+1. Open config.json    
+2. Set your target data folder.   
+3. Save & Close    
 
 ## Run End to End Processing    
 Run ```bin/run_all.bat```    
