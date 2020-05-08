@@ -7,26 +7,26 @@ A Python library for converting .CSV files containing thermal infrared measureme
 * Pillow
 
 # Getting Started
-## Setup input data  
+## Setup Input Data  
 Open config.json    
 Set your target data folder.   
 Save & Close    
 
-## Run Everything    
-Run bin/run_all.bat    
+## Run End to End Processing    
+Run ```bin/run_all.bat```    
 
 # Workflow for TIR Image Processing
 
 ## Utility Steps
 ### Mask Creation
-python ./util/mask_creator.py    
-    * Create mask for removing outlier temperatures along edges of input CSVs.
-    * Note: This is only needed if there is unwanted data on the edges of the input files.
-    * This allows the final image to exclude values.    
-    * See images/mask.png for example output.    
+```python ./util/mask_creator.py```    
+   * Create mask for removing outlier temperatures along edges of input CSVs.    
+   * Note: This is only needed if there is unwanted data on the edges of the input files.    
+   * This allows the final image to exclude values.    
+   * See images/mask.png for example output.    
 
 ## Processing Steps
-1. Convert temperature CSVs to tiffs  
+1. Convert temperature CSVs to tiffs    
    * Find min and max temperatures across all temp arrays.  
    * Convert temperatures to RGB colors using color range (based on the above min and max temps).
    * Apply image mask to remove edges.  
