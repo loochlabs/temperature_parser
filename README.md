@@ -45,7 +45,7 @@ python ./util/mask_creator.py
    * Create one output CSV with GPS coordinates for all tifs.   
 
 ## Expected Output
-![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/Final_Output_Example.tif)
+![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/Final_Output_Example.png)
 
 ## Temperature Color Range
 ![alt text](https://github.com/thecalooch/temperature_parser/blob/master/images/legend.png)
