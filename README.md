@@ -40,7 +40,7 @@ Run ```bin/run_all.bat```
 3. GPS data parser  
    * Read all Optris GPS files in a directory.  
    * From each file get filename and add '.tif' to filename.  
-   * Get latitude and longitude. (e.g. 43°43.30304'S, 172°26.73182'E).  
+   * Get latitude and longitude in Degrees, Minutes. (e.g. 43°43.30304'S, 172°26.73182'E).  
    * Add altitude of 304.8 to each latitude and longitude. Note: will need to edit altitude for your specific dataset.  
    * Create one output CSV with GPS coordinates for all tifs.   
 
