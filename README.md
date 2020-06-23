@@ -1,3 +1,6 @@
+# Official Releases    
+[![DOI](https://zenodo.org/badge/198722859.svg)](https://zenodo.org/badge/latestdoi/198722859)    
+
 # Temperature Processor
 A Python library for converting .CSV files containing thermal infrared measurements to .TIF image files. Scripts here were developed for TIR images taken with an Optris PI 450 camera with an 80 degree wide-angle lens. 
 
